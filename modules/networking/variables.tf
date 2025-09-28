@@ -15,3 +15,9 @@ variable "tags" {
   description = "Common tags to apply to resources"
   default     = {}
 }
+
+variable "mongo_allowed_cidrs" {
+  description = "CIDRs allowed to access MongoDB (27017)"
+  type        = list(string)
+  default     = []
+}

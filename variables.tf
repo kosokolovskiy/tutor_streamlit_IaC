@@ -119,3 +119,10 @@ variable "domain_config" {
     txt_records            = []
   }
 }
+
+variable "mongo_allowed_cidrs" {
+  description = "CIDRs allowed to access MongoDB (27017)"
+  type        = list(string)
+  default     = []
+}
+

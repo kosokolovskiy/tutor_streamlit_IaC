@@ -52,3 +52,13 @@ resource "aws_security_group" "ssh" {
     ignore_changes  = [tags_all]
   }
 }
+
+resource "aws_vpc_security_group_ingress_rule" "mongo_ips" {
+  for_each          = toset(var.mongo_allowed_cidrs)
+  description       = "MongoDB 27017 from allowed IPs"
+  security_group_id = aws_security_group.ssh.id
+  from_port         = 27017
+  to_port           = 27017
+  ip_protocol       = "tcp"
+  cidr_ipv4         = each.value
+}

@@ -43,6 +43,8 @@ module "networking" {
   environment  = var.environment
   project_name = var.project_name
 
+  mongo_allowed_cidrs = var.mongo_allowed_cidrs
+
   tags = local.common_tags
 }
 
