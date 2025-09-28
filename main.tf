@@ -56,10 +56,10 @@ module "compute" {
   project_name = var.project_name
 
   # Instance configuration (match state exactly)
-  instance_type     = var.ec2_config.instance_type
-  volume_size       = var.ec2_config.volume_size
-  volume_type       = var.ec2_config.volume_type
-  public_key_path   = var.public_key_path
+  instance_type   = var.ec2_config.instance_type
+  volume_size     = var.ec2_config.volume_size
+  volume_type     = var.ec2_config.volume_type
+  public_key_path = var.public_key_path
 
   # Network configuration (using default VPC)
   security_group_id = module.networking.ssh_security_group_id
@@ -93,12 +93,12 @@ module "database" {
   project_name = var.project_name
 
   # Database configuration (match state exactly)
-  instance_class            = var.db_config.instance_class
-  allocated_storage         = var.db_config.allocated_storage
-  username                  = var.db_config.username
-  password                  = var.db_config.password
-  backup_retention_period   = var.db_config.backup_retention_period
-  vpc_security_group_ids    = var.db_config.vpc_security_group_ids
+  instance_class          = var.db_config.instance_class
+  allocated_storage       = var.db_config.allocated_storage
+  username                = var.db_config.username
+  password                = var.db_config.password
+  backup_retention_period = var.db_config.backup_retention_period
+  vpc_security_group_ids  = var.db_config.vpc_security_group_ids
 
   tags = local.common_tags
 }
@@ -132,6 +132,27 @@ module "route53" {
   providers = {
     aws.us_east_1 = aws.us_east_1
   }
+}
+
+module "cloudfront" {
+  source = "./modules/cloudfront"
+
+  origin_domain_name       = "ec2-3-67-163-253.eu-central-1.compute.amazonaws.com"
+  origin_id                = "ec2-3-67-163-253.eu-central-1.compute.amazonaws.com-mg0m9eq2i4j"
+  cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+  origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
+
+  domain_name              = "students.tutor-kosokolovskiy.com"
+  price_class              = "PriceClass_All"
+  viewer_protocol_policy   = "redirect-to-https"
+  allowed_methods          = ["DELETE","GET","HEAD","OPTIONS","PATCH","POST","PUT"]
+  cached_methods           = ["GET","HEAD"]
+  origin_protocol_policy   = "http-only"
+  origin_ssl_protocols     = ["SSLv3","TLSv1","TLSv1.1","TLSv1.2"]
+
+  tags = { Name = "Students New" }
+
+  providers = { aws.us_east_1 = aws.us_east_1 }
 }
 
 # Note: CloudFront distribution already exists and is managed outside Terraform

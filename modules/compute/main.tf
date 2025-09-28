@@ -3,7 +3,7 @@
 # Data source for Ubuntu AMI
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["099720109477"] # Canonical
+  owners      = ["099720109477"]
 
   filter {
     name   = "name"
@@ -16,7 +16,6 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-# SSH Key Pair (exact match with state)
 resource "aws_key_pair" "default" {
   key_name   = "students_key"
   public_key = file(var.public_key_path)
@@ -27,7 +26,6 @@ resource "aws_key_pair" "default" {
   }
 }
 
-# EC2 Instance (exact match with state)
 resource "aws_instance" "students_main" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
@@ -39,7 +37,7 @@ resource "aws_instance" "students_main" {
     volume_type           = var.volume_type
     volume_size           = var.volume_size
     delete_on_termination = true
-    encrypted             = false  # Match state exactly
+    encrypted             = false
   }
 
   tags = {
@@ -53,7 +51,6 @@ resource "aws_instance" "students_main" {
   }
 }
 
-# Elastic IP (exact match with state)
 resource "aws_eip" "main_ip" {
   instance = aws_instance.students_main.id
   domain   = "vpc"

@@ -80,21 +80,21 @@ variable "s3_config" {
 # Database configuration
 variable "db_config" {
   type = object({
-    instance_class            = string
-    allocated_storage         = number
-    username                  = string
-    password                  = string
-    backup_retention_period   = number
-    vpc_security_group_ids    = list(string)
+    instance_class          = string
+    allocated_storage       = number
+    username                = string
+    password                = string
+    backup_retention_period = number
+    vpc_security_group_ids  = list(string)
   })
   description = "Configuration for RDS database"
   default = {
-    instance_class            = "db.t3.micro"
-    allocated_storage         = 20
-    username                  = "main_user"
-    password                  = "dummy_password"  # Will be ignored due to lifecycle rule
-    backup_retention_period   = 7
-    vpc_security_group_ids    = ["sg-0a038475400fdec88", "sg-0b10a84f257baa9d3"]
+    instance_class          = "db.t3.micro"
+    allocated_storage       = 20
+    username                = "main_user"
+    password                = "dummy_password" # Will be ignored due to lifecycle rule
+    backup_retention_period = 7
+    vpc_security_group_ids  = ["sg-0a038475400fdec88", "sg-0b10a84f257baa9d3"]
   }
   sensitive = true
 }
