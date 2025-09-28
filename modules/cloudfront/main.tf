@@ -29,16 +29,16 @@ resource "aws_cloudfront_distribution" "main" {
     custom_origin_config {
       http_port                = 80
       https_port               = 443
-      origin_protocol_policy   = var.origin_protocol_policy   # "http-only" или "https-only"
+      origin_protocol_policy   = var.origin_protocol_policy
       origin_read_timeout      = 30
       origin_keepalive_timeout = 5
-      origin_ssl_protocols     = var.origin_ssl_protocols     # ["TLSv1.2"] и т.п.
+      origin_ssl_protocols     = var.origin_ssl_protocols
     }
   }
 
   default_cache_behavior {
     target_origin_id       = var.origin_id
-    viewer_protocol_policy = var.viewer_protocol_policy       # "redirect-to-https"
+    viewer_protocol_policy = var.viewer_protocol_policy
 
     allowed_methods        = var.allowed_methods
     cached_methods         = var.cached_methods
